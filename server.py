@@ -6,6 +6,7 @@ from model import connect_to_db, PollingCenter, Comment, User, Parties, Politica
 import os
 
 api_key = os.environ['api_key']
+print(api_key)
 
 # r = requests.get('https://www.googleapis.com/civicinfo/v2/voterinfo?address=990%20Jackson%20Street%20San%20Francisco%2C%20CA%2094133&key=AIzaSyCALOx3a43D4qa6l_2R9YJPAPF43A4NnjA')
 
@@ -34,7 +35,7 @@ def address_form():
     return render_template("map.html")
 
 @app.route('/map', methods=['POST'])
-def address_form():
+def address_process():
     """Process address submitted"""
 
     # Get form variables and add to array
@@ -48,7 +49,7 @@ def address_form():
 
     payload = {'key' : api_key,
                 'address' : full_address}
-    
+
     voting_json = requests.get('https://www.googleapis.com/civicinfo/v2/voterinfo', params=payload)
 
     #Jsonifys the get request you make from API using input parameters from form
@@ -56,8 +57,14 @@ def address_form():
 
     #Assigns polling_locations to the pollingLocations value in the voting_json dictionary 
     polling_locations = voting_json['pollingLocations']
-    print(polling_locations)
+    
+    address_list = []
 
+    for line in address_list:
+        address_list.append(line['address']['line1'])
+    
+
+    return render_template("map.html", full_address=full_address, address_list=address_list)
 
 if __name__ == "__main__":
     app.debug = True

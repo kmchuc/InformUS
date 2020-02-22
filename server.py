@@ -63,6 +63,7 @@ def address_process():
     for line in address_list:
         address_list.append(line['address']['line1'])
     
+    
 
     return render_template("map.html", full_address=full_address, address_list=address_list)
 

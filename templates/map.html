@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block header %}
+    <link rel="stylesheet" href="/static/css/styles.css"/>
+    <style>
+        #map {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+{% endblock header %} 
+
+{% block content %}
+
+<main>
+<section class="map">
+<div id="map"></div>
+</section>
+</main>
+
+<script>
+    function initMap() {
+        const unitedStates = {
+            lat: 37.0902,
+            lng: -95.7129
+        };
+
+        const basicMap = new google.maps.Map(document.querySelector('#map'), 
+                        {
+                            center: unitedStates,
+                            zoom: 15
+                        });
+    }
+
+</script>
+
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDSUxrguk0DawgTvSbouXhoHgWXzsCNxdI&callback=initMap"></script>
+
+<form action='/map' method="POST">
+
+    <div class="address-input">
+    To find a nearby polling center, please input an address:
+    <p>
+    <label>Street: </label><input type="text" name="street">
+    </p>
+    <p>
+    <label>City: </label><input type="text" name="city">
+    </p>
+    <p>
+    <label>State: </label><input type="text" name="state">
+    </p>
+    <p>
+    <label>Zipcode: </label><input type="text" name="zipcode">
+    </p>
+    <p>
+    <button id="geocode-address" type="submit">Submit</button>
+    </p>
+    </div>
+
+</form>
+
+{% endblock %}

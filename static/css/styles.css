@@ -1,0 +1,36 @@
+/* styling for homepage */
+.descrp {
+    text-align: center;
+}
+
+.info {
+    text-align: center;
+}
+
+header {
+    grid-area: head;
+}
+
+body {
+    display: grid;
+    grid-template: 'head' 'map' 1fr / auto;
+}
+
+main {
+    grid-area: map;
+}
+
+.map {
+    height: 700px;
+    width: 100%;
+}
+
+#map {
+    height: 100%;
+    width: 100%;
+    position: fixed;
+}
+
+address-input {
+    text-align: center;
+}

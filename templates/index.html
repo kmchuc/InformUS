@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <h2 class=descrp>Informing Voters of possible voter suppression occuring at nearby voting centers</h2>
+
+    <div class=info>
+    <p>
+        <h3>What is Voter Suppression?</h3>
+    </p>
+    <p>
+        A strategy used to influence the outcome of an election by discouraging or preventing specific groups of people from voting. InformUS's mission is to provide voters with proper information to allow you to practice your right to vote!
+    </p>
+
+    <form action="/map">
+        <button type="submit" id="map-button">Locate Polling Center Near Me!</button>
+    </form>
+    </div>
+{% endblock content %}

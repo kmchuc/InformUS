@@ -4,7 +4,7 @@ lst = [{'address': {'locationName': 'San Clemente Outlets, Suite 505', 'line1': 
 newlst = []
 
 for line in lst:
-    geocode_json = requests.get('https://maps.googleapis.com/maps/api/geocode/json?', params={'key' : 'AIzaSyDSUxrguk0DawgTvSbouXhoHgWXzsCNxdI', 
+    geocode_json = requests.get('https://maps.googleapis.com/maps/api/geocode/json?', params={'key' : 'AIzaSyCALOx3a43D4qa6l_2R9YJPAPF43A4NnjA', 
             'address' : f"{line['address']['line1']}, {line['address']['city']}"})
     newlst.append(geocode_json.json()['results'][0]['geometry']['location'])
 

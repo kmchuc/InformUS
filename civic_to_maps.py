@@ -1,18 +1,15 @@
-def civic_to_maps():
-    # Get form variables and add to array
-    street = request.form["street"]
-    city = request.form["city"]
-    state = request.form["state"]
-    zipcode = request.form["zipcode"]
+import os
+import requests
 
-    #Rendered variables from form into a f format string
-    full_address = f"{street} {city}, {state} {zipcode}"
+api_key = os.environ['api_key']
 
-    #the payload will replace parameters within the API request url
+def civic_to_maps(full_address):
+
+    # The payload will replace parameters within the API request url
     payload = {'key' : api_key,
                 'address' : full_address}
 
-    #
+    # Assigning the GET API request to voting_json variable 
     voting_json = requests.get('https://www.googleapis.com/civicinfo/v2/voterinfo', params=payload)
 
     #Jsonifys the get request you make from API using input parameters from form
@@ -21,14 +18,11 @@ def civic_to_maps():
     #Assigns polling_locations to the pollingLocations value in the voting_json dictionary 
     polling_locations = voting_json['pollingLocations']
     
-    address_list = []
+    # Starting new list to put the addresses of the polling locations from json dictionary
+    polling_addresses = []
 
-    for line in address_list:
-        address_list.append(line['address']['line1'])
-    
-    newlst = []
-
-    for line in lst:
-        geocode_json = requests.get('https://maps.googleapis.com/maps/api/geocode/json?', params={'key' : 'AIzaSyDSUxrguk0DawgTvSbouXhoHgWXzsCNxdI', 
+    # Created a for loop to go through the json dictionary that selects the address line and city to make sure the latitutde and longitude are specific enough
+    for line in polling_locations:
+        geocode_json = requests.get('https://maps.googleapis.com/maps/api/geocode/json?', params={'key' : api_key, 
             'address' : f"{line['address']['line1']}, {line['address']['city']}"})
-        newlst.append(geocode_json.json()['results'][0]['geometry']['location'])
+        polling_addresses.append(geocode_json.json()['results'][0]['geometry']['location'])

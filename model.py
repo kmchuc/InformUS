@@ -71,6 +71,7 @@ class User(db.Model):
     fname = db.Column(db.String(25), nullable=False)
     lname = db.Column(db.String(50), nullable=False)
     email = db.Column(db.String(100), nullable=False)
+    password = db.Column(db.String(50), nullable=False)
     lat = db.Column(db.Integer, nullable=False)
     lng = db.Column(db.Integer, nullable=False)
 

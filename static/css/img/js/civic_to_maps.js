@@ -1,4 +1,0 @@
-
-$('#geocode-address').on('submit', () => {
-    
-}

@@ -34,3 +34,20 @@ main {
 .address-input {
     text-align: center;
 }
+
+div h1 {
+    display: inline-block;
+    width: 100%;
+    margin-right: -50%;
+}
+
+div loginbutton {
+    float: right;
+}
+div registerbutton {
+    float: right;
+}
+
+.registerForm {
+    text-align: center;
+}

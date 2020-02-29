@@ -19,25 +19,8 @@
 </section>
 </main>
 
-<script>
-    function initMap() {
-        const unitedStates = {
-            lat: 37.0902,
-            lng: -95.7129
-        };
-
-        const basicMap = new google.maps.Map(document.querySelector('#map'), 
-                        {
-                            center: unitedStates,
-                            zoom: 15
-                        });
-    }
-
-</script>
-
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCALOx3a43D4qa6l_2R9YJPAPF43A4NnjA&callback=initMap"></script>
-
-<form action='/map' method="POST">
+<br>
+<form action='/map' id="locationform" method="POST">
 
     <div class="address-input">
     To find a nearby polling center, please input an address:
@@ -59,5 +42,63 @@
     </div>
 
 </form>
+
+<script>
+    function initMap() {
+        const unitedStates = {
+            lat: 37.0902,
+            lng: -95.7129
+        };
+
+        const basicMap = new google.maps.Map(document.querySelector('#map'), 
+                        {
+                            center: unitedStates,
+                            zoom: 5
+                        });
+        
+        const pollingInfo = new google.maps.InfoWindow();
+        
+        $('#locationform').on('submit', (evt) => {
+            evt.preventDefault();
+
+            const formInputs = $('#locationform').serialize();
+
+            $.get('/locations.json', formInputs, (locations) => {
+                for (const location of locations) {
+                    console.log(location);
+                    const pollingLocationInfo = (`
+                    <div class="window-content">
+                        <ul class="location-info">
+                            <li><b>Location Name: </b>${location.locationName}</li>
+                            <li><b>Hours: </b>${location.hours}</li>
+                            <li><b>Location: </b>${location.latlng.lat}, ${location.latlng.lng}</li>
+                        </ul>
+                    </div>
+                `);
+    
+                const flagMarker = new google.maps.Marker({
+                    position: location.latlng,
+                    map: basicMap,
+                });
+
+                const coords = new google.maps.LatLng(location.latlng)
+                basicMap.setCenter(coords);
+                basicMap.setZoom(12);
+    
+                flagMarker.addListener('click', () => {
+                    pollingInfo.close();
+                    pollingInfo.setContent(pollingLocationInfo);
+                    pollingInfo.open(basicMap, flagMarker);
+                });
+                }
+            });
+        })
+        
+    }
+
+</script>
+
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCALOx3a43D4qa6l_2R9YJPAPF43A4NnjA&callback=initMap"></script>
+<br>
 
 {% endblock %}

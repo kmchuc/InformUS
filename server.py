@@ -4,10 +4,8 @@ from flask import Flask, render_template, redirect, request, flash, session, jso
 from flask_debugtoolbar import DebugToolbarExtension
 from model import connect_to_db, PollingCenter, Comment, User, Parties, PoliticalCandidates
 import os
-from civic_to_maps import civic_to_maps
 
 api_key = os.environ['api_key']
-print(api_key)
 
 ############################################################################################################################################################
 
@@ -21,29 +19,56 @@ def homepage():
 
     return render_template("index.html")
 
-@app.route('/map', methods=['GET'])
+@app.route('/map')
 def address_form():
     """Show form for user to type in address or get nearby location"""
 
     return render_template("map.html")
 
-@app.route('/map', methods=['POST'])
+@app.route('/locations.json')
 def address_process():
     """Process address submitted"""
 
     # Get form variables and add to array
-    street = request.form["street"]
-    city = request.form["city"]
-    state = request.form["state"]
-    zipcode = request.form["zipcode"]
+    street = request.args["street"]
+    city = request.args["city"]
+    state = request.args["state"]
+    zipcode = request.args["zipcode"]
 
     # Rendered variables from form into a f format string
     full_address = f"{street} {city}, {state} {zipcode}"
 
-    # Apply full address to the civic_to_maps function
-    coordinates = civic_to_maps(full_address)
+    # The payload will replace parameters within the API request url
+    payload = {'key' : api_key,
+                'address' : full_address}
 
-    return render_template("map.html")
+    # Assigning the GET API request to voting_json variable 
+    voting_json = requests.get('https://www.googleapis.com/civicinfo/v2/voterinfo', params=payload)
+
+    #Jsonifys the get request you make from API using input parameters from form
+    voting_json = voting_json.json()
+
+    #Assigns polling_locations to the pollingLocations value in the voting_json dictionary 
+    polling_locations = voting_json['pollingLocations']
+
+    # Starting new list to put the addresses of the polling locations from json dictionary
+    locationList = []
+
+    # Created a for loop to go through the json dictionary that selects the address line and city to make sure the latitutde and longitude are specific enough
+    for line in polling_locations:
+        geocode_json = requests.get('https://maps.googleapis.com/maps/api/geocode/json?', params={'key' : api_key, 
+            'address' : f"{line['address']['line1']}, {line['address']['city']}"})
+        locationList.append({'locationName': line['address']['locationName'],
+                            'hours': line['pollingHours'],
+                            'latlng': geocode_json.json()['results'][0]['geometry']['location']})
+
+    return jsonify(locationList)
+
+@app.route('/login')
+def login_form():
+    """Shows form that allows user to login and gain access to comment feature"""
+
+    return render_template("login.html")
 
 @app.route('/register')
 def register_form():
@@ -51,20 +76,36 @@ def register_form():
 
     return render_template("register.html") 
 
-@app.route('/register', methods=['POST'])
-def register_process():
-    fname = request.form["fname"]
-    lname = request.form["lname"]
-    email = request.form["email"]
-    street = request.form["street"]
-    city = request.form["city"]
-    state = request.form["state"]
-    zipcode = request.form["zipcode"]
-    party = request.form["party"]
+# @app.route('/register', methods=['POST'])
+# def register_process():
+#     """Process registration form to database"""
 
-    full_address = f"{street} {city}, {state} {zipcode}"
+#     fname = request.form["fname"]
+#     lname = request.form["lname"]
+#     email = request.form["email"]
+#     street = request.form["street"]
+#     city = request.form["city"]
+#     state = request.form["state"]
+#     zipcode = request.form["zipcode"]
+#     party = request.form["party"]
+
+#     full_address = f"{street} {city}, {state} {zipcode}"
+
+#     user_request = requests.get('https://maps.googleapis.com/maps/api/geocode/json?', params={'key' : api_key, 
+#             'address' : full_address})
     
-    return render_template("register.html")
+#     user_request = user_request.json()
+
+#     lat = user_request['results'][0]['geometry']['location']['lat']
+#     lng = user_request['results'][0]['geometry']['location']['lng']
+
+#     new_user = User(fname=fname, lname=lname, email=email,                password=password,lat=lat, lng=lng)
+
+#     db.session.add(new_user)
+#     db.session.commit()
+
+#     flash(f"User {email} added.")
+#     return redirect(f"/map/")
     
 if __name__ == "__main__":
     app.debug = True

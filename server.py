@@ -64,10 +64,22 @@ def address_process():
 
     return jsonify(locationList)
 
-@app.route('/login')
+@app.route('/login', methods=['GET', 'POST'])
 def login_form():
     """Shows form that allows user to login and gain access to comment feature"""
 
+    form = LoginForm()
+    if form.validate_on_submit():
+        login_user(user)
+
+        flask.flash('Logged in successfully')
+
+        next = flask.request.args.get('next')
+
+        if not is_safe(next):
+            return flask.abort(400)
+
+        return flask.redirect(next or flask.url_for('index'))
     return render_template("login.html")
 
 @app.route('/register')

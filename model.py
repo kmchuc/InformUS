@@ -1,10 +1,13 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from flask_login import loginManager, UserMixin
 
 app = Flask(__name__)
 app.secret_key = "SECRETKEY"
 
-db = SQLAlchemy()
+db = SQLAlchemy(app)
+login_manager = LoginManager()
+login_manager.init_app(app)
 
 #################################################################################
 
@@ -57,12 +60,12 @@ class Comment(db.Model):
                             user_id={self.user_id} 
                             polling_id={self.polling_id}>"""
 
-class User(db.Model):
+class User(UserMixin, db.Model):
     """Table containing User's profile information"""
 
     __tablename__ = "users"
 
-    user_id = db.Column(db.Integer,
+    id = db.Column(db.Integer,
                         primary_key=True,
                         autoincrement=True)
     

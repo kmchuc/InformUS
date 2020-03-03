@@ -3,6 +3,7 @@ from jinja2 import StrictUndefined
 from flask import Flask, render_template, redirect, request, flash, session, jsonify
 from flask_debugtoolbar import DebugToolbarExtension
 from model import connect_to_db, PollingCenter, Comment, User, Parties, PoliticalCandidates
+from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 import os
 
 api_key = os.environ['api_key']
@@ -68,18 +69,18 @@ def address_process():
 def login_form():
     """Shows form that allows user to login and gain access to comment feature"""
 
-    form = LoginForm()
-    if form.validate_on_submit():
-        login_user(user)
+    if request.method == 'POST':
+        session.pop('user_id', None)
 
-        flask.flash('Logged in successfully')
+        username = request.form['username']
+        password = request.form['password']
 
-        next = flask.request.args.get('next')
+        user = [x for x in users if x.username == username][0]
 
-        if not is_safe(next):
-            return flask.abort(400)
+        if user and user.password == password:
+            session['user_id'] = user.id
+            return redirect('/home')
 
-        return flask.redirect(next or flask.url_for('index'))
     return render_template("login.html")
 
 @app.route('/register')
@@ -88,7 +89,7 @@ def register_form():
 
     return render_template("register.html") 
 
-# @app.route('/register', methods=['POST'])
+# @app.route('/register', methods=['GET', 'POST'])
 # def register_process():
 #     """Process registration form to database"""
 
@@ -118,7 +119,24 @@ def register_form():
 
 #     flash(f"User {email} added.")
 #     return redirect(f"/map/")
-    
+
+@app.route('/settings')
+@login_required
+def settings():
+    pass
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return "You are now logged out!"
+
+@app.route('/home')
+@login_required
+def home():
+
+    render_template('home.html')
+
 if __name__ == "__main__":
     app.debug = True
 

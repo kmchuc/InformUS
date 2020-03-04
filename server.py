@@ -3,7 +3,7 @@ from jinja2 import StrictUndefined
 from flask import Flask, render_template, redirect, request, flash, session, jsonify
 from flask_debugtoolbar import DebugToolbarExtension
 from model import connect_to_db, PollingCenter, Comment, User, Parties, PoliticalCandidates
-from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
+from flask_login import login_user, login_required, logout_user
 import os
 
 api_key = os.environ['api_key']
@@ -65,77 +65,86 @@ def address_process():
 
     return jsonify(locationList)
 
-@app.route('/login', methods=['GET', 'POST'])
-def login_form():
-    """Shows form that allows user to login and gain access to comment feature"""
-
-    if request.method == 'POST':
-        session.pop('user_id', None)
-
-        username = request.form['username']
-        password = request.form['password']
-
-        user = [x for x in users if x.username == username][0]
-
-        if user and user.password == password:
-            session['user_id'] = user.id
-            return redirect('/home')
-
-    return render_template("login.html")
-
-@app.route('/register')
+@app.route('/register', methods=['GET'])
 def register_form():
     """Shows form for user to register account info"""
 
     return render_template("register.html") 
 
-# @app.route('/register', methods=['GET', 'POST'])
-# def register_process():
-#     """Process registration form to database"""
+@app.route('/register', methods=['GET', 'POST'])
+def register_process():
+    """Process registration form to database"""
 
-#     fname = request.form["fname"]
-#     lname = request.form["lname"]
-#     email = request.form["email"]
-#     street = request.form["street"]
-#     city = request.form["city"]
-#     state = request.form["state"]
-#     zipcode = request.form["zipcode"]
-#     party = request.form["party"]
+    fname = request.form["fname"]
+    lname = request.form["lname"]
+    email = request.form["email"]
+    password = request.form["password"]
+    street = request.form["street"]
+    city = request.form["city"]
+    state = request.form["state"]
+    zipcode = request.form["zipcode"]
+    party = request.form["party"]
 
-#     full_address = f"{street} {city}, {state} {zipcode}"
+    address = f"{street} {city}, {state} {zipcode}"
 
-#     user_request = requests.get('https://maps.googleapis.com/maps/api/geocode/json?', params={'key' : api_key, 
-#             'address' : full_address})
+    user_request = requests.get('https://maps.googleapis.com/maps/api/geocode/json?', params={'key' : api_key, 
+            'address' : address})
     
-#     user_request = user_request.json()
+    user_request = user_request.json()
 
-#     lat = user_request['results'][0]['geometry']['location']['lat']
-#     lng = user_request['results'][0]['geometry']['location']['lng']
+    lat = user_request['results'][0]['geometry']['location']['lat']
+    lng = user_request['results'][0]['geometry']['location']['lng']
 
-#     new_user = User(fname=fname, lname=lname, email=email,                password=password,lat=lat, lng=lng)
+    new_user = User(address=address, fname=fname, lname=lname, email=email,  password=password, lat=lat, lng=lng)
 
-#     db.session.add(new_user)
-#     db.session.commit()
+    db.session.add(new_user)
+    db.session.commit()
 
-#     flash(f"User {email} added.")
-#     return redirect(f"/map/")
+    flash(f"User {email} added.")
+    return redirect(f"/home")
 
-@app.route('/settings')
-@login_required
-def settings():
-    pass
+@app.route('/login')
+def login_form():
+    """Shows login form. """
 
-@app.route('/logout')
-@login_required
-def logout():
-    logout_user()
-    return "You are now logged out!"
+    return render_template("login.html")
+
+@app.route('/login', methods=['POST'])
+def login_process():
+    """Process login"""
+
+    # Get form variables 
+    email = request.form['email']
+    password = request.form['password']
+
+    user = User.query.filter_by(email=email).first()
+
+    if not user:
+        flash("Couldn't find existing email and password combination, please type email/password again")
+        return redirect('/login')
+
+    if user.password != password:
+        flash("Incorrect password. Please try again.")
+        return redirect('/login')
+    
+    session["user_id"] = user.user_id
+
+    flash("Login successfully!")
+    return redirect('/home')
 
 @app.route('/home')
 @login_required
 def home():
 
-    render_template('home.html')
+    return('home.html')
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    del session["user_id"]
+    flash("You have logged out successfully!")
+    return redirect('/')
 
 if __name__ == "__main__":
     app.debug = True

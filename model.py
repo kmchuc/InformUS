@@ -5,10 +5,9 @@ from flask_login import LoginManager, UserMixin
 app = Flask(__name__)
 app.secret_key = "SECRETKEY"
 
-db = SQLAlchemy(app)
-login_manager = LoginManager(app)
+db = SQLAlchemy()
+login_manager = LoginManager()
 login_manager.init_app(app)
-login_manager.login_view = 'login'
 
 #################################################################################
 
@@ -66,7 +65,7 @@ class User(UserMixin, db.Model):
 
     __tablename__ = "users"
 
-    id = db.Column(db.Integer,
+    user_id = db.Column(db.Integer,
                         primary_key=True,
                         autoincrement=True)
     
@@ -87,12 +86,12 @@ class User(UserMixin, db.Model):
     parties = db.relationship("Parties",
                             backref=db.backref("users", order_by=user_id))
 
-    def __repr__(self):
-        return f"""<User user_id={self.user_id} party_id={self.party_id}>"""
-
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
+
+    def __repr__(self):
+        return f"""<User user_id={self.user_id} party_id={self.party_id}>"""
 
 class Parties(db.Model):
     """Table containing each political party"""
@@ -104,6 +103,7 @@ class Parties(db.Model):
                         autoincrement=True)
     
     political_party = db.Column(db.String(100), nullable=False)
+    political_party_abbr = db.Column(db.String(4), nullable=False)
 
     #Defining relationship between Parties and Political Candidates tables
     candidates = db.relationship("PoliticalCandidates",
@@ -135,7 +135,7 @@ def connect_to_db(app):
     """Connects the database to our Flask app"""
 
     #Configures app to use our database
-    app.config["SQLALCHEMY_DATABASE_URI"] = "postgres:///votings"
+    app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql:///votings"
     app.config["SQLALCHEMY_ECHO"] = False
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     db.app = app

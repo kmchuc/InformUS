@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+
+{% block header %}
+    <link rel="stylesheet" href="/static/css/styles.css"/>
+{% endblock header %}
+
+{% block content %}
+
+<form action='/register' method="POST">
+    <div class="registerForm">
+        Fill in the required fields to register an account:
+        <p>
+            <label>First Name: </label><input type="text" name="fname">
+        </p>
+        <p>
+            <label>Last Name: </label><input type="text" name="lname">
+        </p>
+        <p>
+            <label>Email: </label><input type="text" name="email">
+        </p>
+        <p>
+            <label>Password: </label><input type="password" name="password" minlength='8' required>
+        </p>
+        <p>
+            <label>Street: </label><input type="text" name="street">
+        </p>
+        <p>
+            <label>City: </label><input type="text" name="city">
+        </p>
+        <p>
+            <label>State: </label><select name="state">
+                <option value="alabama">AL</option>
+                <option value="alaska">AK</option>
+                <option value="arizona">AZ</option>
+                <option value="arkansas">AR</option>
+                <option value="california">CA</option>
+                <option value="colorado">CO</option>
+                <option value="connecticut">CT</option>
+                <option value="delaware">DE</option>
+                <option value="florida">FL</option>
+                <option value="georgia">GA</option>
+                <option value="hawaii">HI</option>
+                <option value="idaho">ID</option>
+                <option value="illinois">IL</option>
+                <option value="indiana">IN</option>
+                <option value="iowa">IA</option>
+                <option value="kansas">KS</option>
+                <option value="kentucky">KY</option>
+                <option value="louisiana">LA</option>
+                <option value="maine">ME</option>
+                <option value="maryland">MD</option>
+                <option value="massachusetts">MA</option>
+                <option value="michigan">MI</option>
+                <option value="minnesota">MI</option>
+                <option value="mississippi">MN</option>
+                <option value="missouri">MO</option>
+                <option value="montana">MT</option>
+                <option value="nebraska">NE</option>
+                <option value="nevada">NV</option>
+                <option value="newhampshire">NH</option>
+                <option value="newjersey">NJ</option>
+                <option value="newmexico">NM</option>
+                <option value="newyork">NY</option>
+                <option value="northcarolina">NC</option>
+                <option value="northdakota">ND</option>
+                <option value="ohio">OH</option>
+                <option value="oklahoma">OK</option>
+                <option value="oregon">OR</option>
+                <option value="pennsylvania">PA</option>
+                <option value="rhodeisland">RI</option>
+                <option value="southcarolina">SC</option>
+                <option value="southdakota">SD</option>
+                <option value="tennessee">TN</option>
+                <option value="texas">TX</option>
+                <option value="utah">UT</option>
+                <option value="vermont">VA</option>
+                <option value="virginia">VA</option>
+                <option value="washington">WA</option>
+                <option value="westvirginia">WV</option>
+                <option value="wisconsin">WI</option>
+                <option value="wyoming">WY</option>
+            </select>
+        </p>
+        <p>
+            <label>Zipcode: </label><input type="text" name="zipcode">
+        </p>
+        <p>
+            <label>Political Party: </label>
+            <select name="party">
+                <option value="constitution">Constitution</option>
+                <option value="democratic">Democratic</option>
+                <option value="green">Green Party</option>
+                <option value="liberatarian">Libertarian</option>
+                <option value="republican">Republican</option>
+            </select>
+        </p>
+        <p>
+            <button type="submit">Register!</button>
+        </p>
+    </div>
+
+</form>
+
+{% endblock %}

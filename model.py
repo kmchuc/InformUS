@@ -136,7 +136,7 @@ def connect_to_db(app):
 
     #Configures app to use our database
     app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql:///votings"
-    app.config["SQLALCHEMY_ECHO"] = False
+    app.config["SQLALCHEMY_ECHO"] = True
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     db.app = app
     db.init_app(app)

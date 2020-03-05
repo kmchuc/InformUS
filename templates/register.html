@@ -6,29 +6,31 @@
 
 {% block content %}
 
+<script src="/static/js/autocomplete.js"></script>
+
 <form action='/register' method="POST">
     <div class="registerForm">
         Fill in the required fields to register an account:
         <p>
-            <label>First Name: </label><input type="text" name="fname">
+            <label>First Name: </label><input type="text" name="fname" required>
         </p>
         <p>
-            <label>Last Name: </label><input type="text" name="lname">
+            <label>Last Name: </label><input type="text" name="lname" required>
         </p>
         <p>
-            <label>Email: </label><input type="text" name="email">
+            <label>Email: </label><input type="text" name="email" required>
         </p>
         <p>
-            <label>Password: </label><input type="password" name="password" minlength='8' required>
+            <label>Password: </label><input type="password" name="password" placeholder="123 Any Street" minlength='8' required>
         </p>
         <p>
-            <label>Street: </label><input type="text" name="street">
+            <label>Street: </label><input type="text" name="street" required>
         </p>
         <p>
-            <label>City: </label><input type="text" name="city">
+            <label>City: </label><input type="text" name="city" required>
         </p>
         <p>
-            <label>State: </label><select name="state">
+            <label>State: </label><select name="state" required>
                 <option value="alabama">AL</option>
                 <option value="alaska">AK</option>
                 <option value="arizona">AZ</option>
@@ -82,23 +84,31 @@
             </select>
         </p>
         <p>
-            <label>Zipcode: </label><input type="text" name="zipcode">
+            <label>Zipcode: </label><input type="text" required name="zipcode">
         </p>
         <p>
             <label>Political Party: </label>
-            <select name="party">
-                <option value="constitution">Constitution</option>
-                <option value="democratic">Democratic</option>
-                <option value="green">Green Party</option>
-                <option value="liberatarian">Libertarian</option>
-                <option value="republican">Republican</option>
-            </select>
+            <input id="inputPoliticalParty" type="text" name="politicalparty" required>
         </p>
         <p>
             <button type="submit">Register!</button>
         </p>
     </div>
-
 </form>
+
+<script>
+
+///initiating the autocomplete function along with inputPoliticalParty element
+autocomplete(document.getElementById("inputPoliticalParty"), parties);
+
+form.addListening("submit", function(evt) {
+    if (form.checkValidity() === false) {
+        evt.preventDefault();
+        alert("Form is invalid - please fill in required fields!");
+        return false;
+    }
+});
+
+</script>
 
 {% endblock %}

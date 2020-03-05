@@ -83,7 +83,7 @@ def register_process():
     city = request.form["city"]
     state = request.form["state"]
     zipcode = request.form["zipcode"]
-    party = request.form["party"]
+    party_id = request.form["party"]
 
     address = f"{street} {city}, {state} {zipcode}"
 
@@ -95,7 +95,7 @@ def register_process():
     lat = user_request['results'][0]['geometry']['location']['lat']
     lng = user_request['results'][0]['geometry']['location']['lng']
 
-    new_user = User(address=address, fname=fname, lname=lname, email=email,  password=password, lat=lat, lng=lng)
+    new_user = User(address=address, fname=fname, lname=lname, email=email,  password=password, lat=lat, lng=lng, party_id=party_id)
 
     db.session.add(new_user)
     db.session.commit()

@@ -1,9 +1,8 @@
 import requests
 from jinja2 import StrictUndefined
-from flask import Flask, render_template, redirect, request, flash, session, jsonify
+from flask import Flask, g, render_template, redirect, request, flash, session, jsonify, url_for
 from flask_debugtoolbar import DebugToolbarExtension
-from model import connect_to_db, PollingCenter, Comment, User, Parties, PoliticalCandidates
-from flask_login import login_user, login_required, logout_user
+from model import connect_to_db, db, PollingCenter, Comment, User, Parties, PoliticalCandidates
 import os
 
 api_key = os.environ['api_key']
@@ -13,6 +12,14 @@ api_key = os.environ['api_key']
 app = Flask(__name__)
 app.secret_key = "SECRETKEY"
 app.jinja_env.undefined = StrictUndefined
+
+# @app.before_request
+# def before_request():
+#     g.user = None
+
+#     if 'user_id' in session:
+#         user = User.query.get(session['user_id'])
+#         g.user = user
 
 @app.route('/')
 def homepage():
@@ -65,89 +72,132 @@ def address_process():
 
     return jsonify(locationList)
 
-@app.route('/register', methods=['GET'])
-def register_form():
-    """Shows form for user to register account info"""
-
-    return render_template("register.html") 
-
 @app.route('/register', methods=['GET', 'POST'])
-def register_process():
+def register():
     """Process registration form to database"""
-
-    fname = request.form["fname"]
-    lname = request.form["lname"]
-    email = request.form["email"]
-    password = request.form["password"]
-    street = request.form["street"]
-    city = request.form["city"]
-    state = request.form["state"]
-    zipcode = request.form["zipcode"]
-    party_id = request.form["party"]
-
-    address = f"{street} {city}, {state} {zipcode}"
-
-    user_request = requests.get('https://maps.googleapis.com/maps/api/geocode/json?', params={'key' : api_key, 
-            'address' : address})
     
-    user_request = user_request.json()
+    if request.method == 'POST':
+        fname = request.form["fname"]
+        lname = request.form["lname"]
+        email = request.form["email"]
+        password = request.form["password"]
+        street = request.form["street"]
+        city = request.form["city"]
+        state = request.form["state"]
+        zipcode = request.form["zipcode"]
+        party = request.form["politicalparty"]
 
-    lat = user_request['results'][0]['geometry']['location']['lat']
-    lng = user_request['results'][0]['geometry']['location']['lng']
+        address = f"{street} {city}, {state} {zipcode}"
 
-    new_user = User(address=address, fname=fname, lname=lname, email=email,  password=password, lat=lat, lng=lng, party_id=party_id)
+        user_request = requests.get('https://maps.googleapis.com/maps/api/geocode/json?', params={'key' : api_key, 
+                'address' : address})
+        
+        user_request = user_request.json()
 
-    db.session.add(new_user)
-    db.session.commit()
+        lat = user_request['results'][0]['geometry']['location']['lat']
+        lng = user_request['results'][0]['geometry']['location']['lng']
 
-    flash(f"User {email} added.")
-    return redirect(f"/home")
+        user_party = Parties.query.filter_by(political_party=party).first()
 
-@app.route('/login')
+        party_id = user_party.party_id
+
+        new_user = User(address=address, fname=fname, lname=lname, email=email, password=password,lat=lat, lng=lng, party_id=party_id)
+
+        db.session.add(new_user)
+        db.session.commit()
+
+        flash(f"User {email} added.")
+        return redirect(url_for("home"))
+
+    return render_template('register.html')
+
+@app.route('/login', methods=['GET'])
 def login_form():
-    """Shows login form. """
+    """Show login form."""
 
     return render_template("login.html")
 
 @app.route('/login', methods=['POST'])
-def login_process():
+def login():
     """Process login"""
 
-    # Get form variables 
     email = request.form['email']
     password = request.form['password']
 
     user = User.query.filter_by(email=email).first()
 
     if not user:
-        flash("Couldn't find existing email and password combination, please type email/password again")
-        return redirect('/login')
-
-    if user.password != password:
-        flash("Incorrect password. Please try again.")
-        return redirect('/login')
+        flash("No such user")
+        return redirect("/login")
     
-    session["user_id"] = user.user_id
+    if user.password != password:
+        flash("Incorrect password")
+        return redirect("/login")
+    
+    session['user_id'] = user.user_id
 
-    flash("Login successfully!")
     return redirect('/home')
 
 @app.route('/home')
-@login_required
 def home():
 
-    return('home.html')
+    # if not g.user:
+    #     return redirect(url_for('login'))
 
-@app.route('/logout')
-@login_required
-def logout():
-    logout_user()
-    del session["user_id"]
-    flash("You have logged out successfully!")
-    return redirect('/')
+    return render_template('home.html')
 
+@app.route('/homesetup.json')
+def setup():
+
+    # for user's session
+    if session.get(['user_id']):
+        user = User.query.get(session['user_id'])
+        print(user)
+        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+        address = user.address
+        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+        print(address)
+        # query for user's address and run it through google civic api
+
+        payload = {'key' : api_key,
+                    'address' : address}
+
+        # Assigning the GET API request to voting_json variable 
+        voting_json = requests.get('https://www.googleapis.com/civicinfo/v2/voterinfo', params=payload)
+
+        #Jsonifys the get request you make from API using input parameters from form
+        voting_json = voting_json.json()
+
+        #Assigns polling_locations to the pollingLocations value in the voting_json dictionary 
+        polling_locations = voting_json['pollingLocations']
+
+        # Starting new list to put the addresses of the polling locations from json dictionary
+        locationList = []
+
+        # Created a for loop to go through the json dictionary that selects the address line and city to make sure the latitutde and longitude are specific enough
+        for line in polling_locations:
+            geocode_json = requests.get('https://maps.googleapis.com/maps/api/geocode/json?', params={'key' : api_key, 
+                'address' : f"{line['address']['line1']}, {line['address']['city']}"})
+            locationList.append({'locationName': line['address']['locationName'],
+                                'hours': line['pollingHours'],
+                                'latlng': geocode_json.json()['results'][0]['geometry']['location']})
+
+        return jsonify(locationList)
+    # get that sent through google geolocation 
+    # have markers show on map
+    
+
+# @app.route('/logout')
+# def logout():
+#     del session["user_id"]
+#     flash("You have logged out successfully!")
+#     return redirect('/')
+
+##############################################################
 if __name__ == "__main__":
     app.debug = True
+
+    app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 
     connect_to_db(app)
 

@@ -10,9 +10,6 @@
     }
 </style>
 
-{% endblock header %} 
-
-{% block content %}
 
 <main>
 <section class="map">
@@ -23,8 +20,7 @@
 <script>
     function initMap() {
         const unitedStates = {
-            lat: 37.0902,
-            lng: -95.7129
+            lat: 37.0902, lng: -95.7129
         };
 
         const basicMap = new google.maps.Map(document.querySelector('#map'), 
@@ -32,27 +28,33 @@
                             center: unitedStates,
                             zoom: 5
                         });
-        
+
         const pollingInfo = new google.maps.InfoWindow();
+        
+    var map;
+    function initialize() {
 
-        $('#locationform').on('submit', (evt) => {
-            evt.preventDefault();
+        var mapOptions = {
+            center: new google.maps.LatLng(10,10),
+            zoom: 5
+        };
+    }}
 
-            const formInputs = $('#locationform').serialize();
-
-            $.get('/locations.json', formInputs, (locations) => {
-                for (const location of locations) {
-                    console.log(location);
-                    const pollingLocationInfo = (`
-                    <div class="window-content">
-                        <ul class="location-info">
-                            <li><b>Location Name: </b>${location.locationName}</li>
-                            <li><b>Hours: </b>${location.hours}</li>
-                            <li><b>Location: </b>${location.latlng.lat}, ${location.latlng.lng}</li>
-                        </ul>
-                    </div>
-                `);
-    
+        $.get('/homesetup.json',  (locations) => {
+            for (const location of locations) {
+                console.log(location);
+                const pollingLocationInfo = (`
+                <div class="window-content">
+                    <ul class="location-info">
+                        <li><b>Location Name: </b>${location.locationName}</li>
+                        <li><b>Hours: </b>${location.hours}</li>
+                        <li><b>Location: </b>${location.latlng.lat}, ${location.latlng.lng}</li>
+                        <li><b>Comment: </b><input type="text" id="comment" name="comment" maxlength="140"></li>
+                    </ul>
+                </div>
+            `);
+            }
+        })
                 const flagMarker = new google.maps.Marker({
                     position: location.latlng,
                     map: basicMap,
@@ -61,17 +63,12 @@
                 const coords = new google.maps.LatLng(location.latlng)
                 basicMap.setCenter(coords);
                 basicMap.setZoom(12);
-    
+
                 flagMarker.addListener('click', () => {
                     pollingInfo.close();
                     pollingInfo.setContent(pollingLocationInfo);
                     pollingInfo.open(basicMap, flagMarker);
                 });
-                }
-            });
-        })
-        
-    }
 
 </script>
 

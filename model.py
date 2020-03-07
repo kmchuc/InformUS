@@ -1,13 +1,11 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from flask_login import LoginManager, UserMixin
+from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
 app.secret_key = "SECRETKEY"
 
 db = SQLAlchemy()
-login_manager = LoginManager()
-login_manager.init_app(app)
 
 #################################################################################
 
@@ -22,8 +20,8 @@ class PollingCenter(db.Model):
                             primary_key=True,
                             autoincrement=True)
     address = db.Column(db.String(100), nullable=False)
-    lat = db.Column(db.Integer, nullable=False)
-    lng = db.Column(db.Integer, nullable=False)
+    lat = db.Column(db.Float, nullable=False)
+    lng = db.Column(db.Float, nullable=False)
     hours_of_operation = db.Column(db.String(50), nullable=False)
 
     def __repr__(self):
@@ -60,7 +58,7 @@ class Comment(db.Model):
                             user_id={self.user_id} 
                             polling_id={self.polling_id}>"""
 
-class User(UserMixin, db.Model):
+class User(db.Model):
     """Table containing User's profile information"""
 
     __tablename__ = "users"
@@ -75,8 +73,8 @@ class User(UserMixin, db.Model):
     lname = db.Column(db.String(50), nullable=False)
     email = db.Column(db.String(100), nullable=False)
     password = db.Column(db.String(50), nullable=False)
-    lat = db.Column(db.Integer, nullable=False)
-    lng = db.Column(db.Integer, nullable=False)
+    lat = db.Column(db.Float, nullable=False)
+    lng = db.Column(db.Float, nullable=False)
 
     #Defining relationship between User and Comment table
     comment = db.relationship("Comment",
@@ -86,9 +84,13 @@ class User(UserMixin, db.Model):
     parties = db.relationship("Parties",
                             backref=db.backref("users", order_by=user_id))
 
-@login_manager.user_loader
-def load_user(user_id):
-    return User.query.get(int(user_id))
+    def set_password(self, password):
+        """create hashsed password"""
+        self.password = generate_password_hash(password, method='sha256')
+    
+    def check_password(self, password):
+        """checks hashes password"""
+        return check_password_hash(self.password, password)
 
     def __repr__(self):
         return f"""<User user_id={self.user_id} party_id={self.party_id}>"""

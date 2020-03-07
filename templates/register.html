@@ -5,7 +5,6 @@
 {% endblock header %}
 
 {% block content %}
-
 <script src="/static/js/autocomplete.js"></script>
 
 <form action='/register' method="POST">
@@ -18,13 +17,13 @@
             <label>Last Name: </label><input type="text" name="lname" required>
         </p>
         <p>
-            <label>Email: </label><input type="text" name="email" required>
+            <label>Email: </label><input type="text" placeholder="name@example.com" name="email" required>
         </p>
         <p>
-            <label>Password: </label><input type="password" name="password" placeholder="123 Any Street" minlength='8' required>
+            <label>Password: </label><input type="password" name="password" minlength='8' required>
         </p>
         <p>
-            <label>Street: </label><input type="text" name="street" required>
+            <label>Street: </label><input type="text" placeholder="123 Any Street" name="street" required>
         </p>
         <p>
             <label>City: </label><input type="text" name="city" required>
@@ -91,7 +90,7 @@
             <input id="inputPoliticalParty" type="text" name="politicalparty" required>
         </p>
         <p>
-            <button type="submit">Register!</button>
+            <button action="/home" type="submit">Register!</button>
         </p>
     </div>
 </form>

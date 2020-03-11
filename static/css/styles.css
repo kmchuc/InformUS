@@ -7,6 +7,14 @@
     text-align: center;
 }
 
+.title {
+    float: left;
+}
+
+.topnav-right {
+    float: right;
+}
+
 header {
     grid-area: head;
 }

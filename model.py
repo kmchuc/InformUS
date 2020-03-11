@@ -1,12 +1,13 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask_login import LoginManager, UserMixin
+
 
 app = Flask(__name__)
 app.secret_key = "SECRETKEY"
 
 db = SQLAlchemy()
-
 #################################################################################
 
 #Defining each table through classes 
@@ -19,7 +20,7 @@ class PollingCenter(db.Model):
     polling_id = db.Column(db.Integer,
                             primary_key=True,
                             autoincrement=True)
-    address = db.Column(db.String(100), nullable=False)
+    # address = db.Column(db.String(100), nullable=False)
     lat = db.Column(db.Float, nullable=False)
     lng = db.Column(db.Float, nullable=False)
     hours_of_operation = db.Column(db.String(50), nullable=False)
@@ -39,13 +40,13 @@ class Comment(db.Model):
     comment_id = db.Column(db.Integer,
                             primary_key=True,
                             autoincrement=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     polling_id = db.Column(db.Integer, db.ForeignKey('pollingcenters.polling_id'), nullable=False)
     comment = db.Column(db.String(140), nullable=False)
 
     #Defining relationship between Comment and Polling Center tables
     polling_center = db.relationship("PollingCenter",
-                                    backref=db.backref("comments", order_by=comment_id))
+                                    backref=db.backref("comments", order_by=user_id))
 
     #Defining relationship between Comment and User table
     user = db.relationship("User",
@@ -58,12 +59,12 @@ class Comment(db.Model):
                             user_id={self.user_id} 
                             polling_id={self.polling_id}>"""
 
-class User(db.Model):
+class User(UserMixin, db.Model):
     """Table containing User's profile information"""
 
     __tablename__ = "users"
 
-    user_id = db.Column(db.Integer,
+    id = db.Column(db.Integer,
                         primary_key=True,
                         autoincrement=True)
     
@@ -78,22 +79,23 @@ class User(db.Model):
 
     #Defining relationship between User and Comment table
     comment = db.relationship("Comment",
-                            backref=db.backref("users", order_by=user_id))
+                            backref=db.backref("users", order_by=id))
     
     #Defining relationship between User and Parties table
     parties = db.relationship("Parties",
-                            backref=db.backref("users", order_by=user_id))
+                            backref=db.backref("users", order_by=id))
 
-    def set_password(self, password):
-        """create hashsed password"""
-        self.password = generate_password_hash(password, method='sha256')
+    # def set_password(self, password):
+    #     """create hashsed password"""
+    #     self.password_hash = generate_password_hash(password)
     
-    def check_password(self, password):
-        """checks hashes password"""
-        return check_password_hash(self.password, password)
+    # def check_password(self, password):
+    #     """checks hashes password"""
+    #     return check_password_hash(self.password, password)
 
     def __repr__(self):
-        return f"""<User user_id={self.user_id} party_id={self.party_id}>"""
+        return f"""<User user_id={self.id} party_id={self.party_id}>"""
+
 
 class Parties(db.Model):
     """Table containing each political party"""

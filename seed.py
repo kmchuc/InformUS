@@ -28,7 +28,7 @@ def set_val_user_id():
     """Sets the value for next user in database"""
 
     # Get the value for the next user_id to be max_id +1
-    result = db.session.query(func.max(User.user_id)).one()
+    result = db.session.query(func.max(User.id)).one()
     max_id = int(result[0])
 
     # Set the value for the next user_id to be max_id +1

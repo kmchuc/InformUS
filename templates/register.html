@@ -7,7 +7,95 @@
 {% block content %}
 <script src="/static/js/autocomplete.js"></script>
 
+<h2>Register</h2>
 <form action='/register' method="POST">
+    {{ form.hidden_tag() }}
+    <p>
+        {{ form.fname.label }}<br>
+        {{ form.fname(size=64) }}<br>
+        {% for error in form.fname.errors %}
+        <span style="color:red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+
+    <p>
+        {{ form.lname.label }}<br>
+        {{ form.lname(size=64) }}<br>
+        {% for error in form.lname.errors %}
+        <span style="color:red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+
+    <p>
+        {{ form.email.label }}<br>
+        {{ form.email(size=64) }}<br>
+        {% for error in form.email.errors %}
+        <span style="color:red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+
+    <p>
+        {{ form.password.label }}<br>
+        {{ form.password(size=32) }}<br>
+        {% for error in form.password.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+
+    <p>
+        {{ form.password2.label }}<br>
+        {{ form.password2(size=32) }}<br>
+        {% for error in form.password2.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+
+    <p>
+        {{ form.street.label }}<br>
+        {{ form.street(size=32) }}<br>
+        {% for error in form.street.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+
+    <p>
+        {{ form.city.label }}<br>
+        {{ form.city(size=32) }}<br>
+        {% for error in form.city.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+
+    <p>
+        {{ form.state.label }}<br>
+        {{ form.state }}<br>
+        {% for error in form.state.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+
+    <p>
+        {{ form.zipcode.label }}<br>
+        {{ form.zipcode(size=32) }}<br>
+        {% for error in form.zipcode.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+
+    <p>
+        {{ form.politicalparty.label }}<br>
+        {{ form.politicalparty(size=32) }}<br>
+        {% for error in form.politicalparty.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+
+    <p>
+        {{ form.submit() }}
+    </p>
+</form>
+
+<!-- <form action='/register' method="POST">
     <div class="registerForm">
         Fill in the required fields to register an account:
         <p>
@@ -21,6 +109,9 @@
         </p>
         <p>
             <label>Password: </label><input type="password" name="password" minlength='8' required>
+        </p>
+        <p>
+            <label>Re-enter Password: </label><input type="password" name="password-repeat" minlength='8' required>
         </p>
         <p>
             <label>Street: </label><input type="text" placeholder="123 Any Street" name="street" required>
@@ -52,8 +143,8 @@
                 <option value="maryland">MD</option>
                 <option value="massachusetts">MA</option>
                 <option value="michigan">MI</option>
-                <option value="minnesota">MI</option>
-                <option value="mississippi">MN</option>
+                <option value="minnesota">MN</option>
+                <option value="mississippi">MS</option>
                 <option value="missouri">MO</option>
                 <option value="montana">MT</option>
                 <option value="nebraska">NE</option>
@@ -74,7 +165,7 @@
                 <option value="tennessee">TN</option>
                 <option value="texas">TX</option>
                 <option value="utah">UT</option>
-                <option value="vermont">VA</option>
+                <option value="vermont">VT</option>
                 <option value="virginia">VA</option>
                 <option value="washington">WA</option>
                 <option value="westvirginia">WV</option>
@@ -93,7 +184,7 @@
             <button action="/home" type="submit">Register!</button>
         </p>
     </div>
-</form>
+</form> -->
 
 <script>
 

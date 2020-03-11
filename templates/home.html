@@ -17,7 +17,15 @@
 </section>
 </main>
 
+<a href='/'>To view comments for other polling centers click here!</a>
+
+<h3 class="locationtitle">{location.locationName}</h3>
+<div id="comments">
+
+</div>
+
 <script>
+    
     function initMap() {
         const unitedStates = {
             lat: 37.0902, lng: -95.7129
@@ -38,38 +46,74 @@
             center: new google.maps.LatLng(10,10),
             zoom: 5
         };
-    }}
+    }
 
         $.get('/homesetup.json',  (locations) => {
+            const coords = new google.maps.LatLng(locations[0].latlng)
+                basicMap.setCenter(coords);
+                basicMap.setZoom(12);
+
             for (const location of locations) {
                 console.log(location);
+                $('.locationtitle')[0].innerHTML = location.locationName
                 const pollingLocationInfo = (`
                 <div class="window-content">
                     <ul class="location-info">
                         <li><b>Location Name: </b>${location.locationName}</li>
                         <li><b>Hours: </b>${location.hours}</li>
                         <li><b>Location: </b>${location.latlng.lat}, ${location.latlng.lng}</li>
-                        <li><b>Comment: </b><input type="text" id="comment" name="comment" maxlength="140"></li>
+                        <form action="/home" method="POST">
+                        <li><b>Comment: </b>
+                            <input type="text" id="comment" name="comment" maxlength="140"></li>
+                            <input type="hidden" name="lat" value="${location.latlng.lat}">
+                            <input type="hidden" name="lng" value="${location.latlng.lng}">
+                            <input type="hidden" name="locationname" value="${location.locationName}">
+                            <input type="hidden" name="hours" value="${location.hours}">
+                            <input type="submit">
+                        </form>
                     </ul>
                 </div>
             `);
-            }
-        })
+
+            $('#comment').on('submit', (evt) => {
+                evt.preventDefault();
+                console.log("hello");
+            })
+         
                 const flagMarker = new google.maps.Marker({
                     position: location.latlng,
                     map: basicMap,
                 });
 
-                const coords = new google.maps.LatLng(location.latlng)
-                basicMap.setCenter(coords);
-                basicMap.setZoom(12);
-
+                
                 flagMarker.addListener('click', () => {
                     pollingInfo.close();
                     pollingInfo.setContent(pollingLocationInfo);
                     pollingInfo.open(basicMap, flagMarker);
                 });
 
+                flagMarker.addListener('dblclick', () => {
+                    const data = {
+                        'lat': location.latlng.lat,
+                        'lng': location.latlng.lng
+                    }
+
+                    $.get('/comments.json', data, (res) => {
+                        console.log(res)
+                        $('#comments').empty();
+                        for (c of res) {
+                        $('#comments').append(`
+                        <div id=${c.comment_id}>
+                            'Comment: '${c.comment}, 'User ID: '${c.user_id}
+                        </div>
+                        `)
+                        };
+                        })
+                    
+                });
+            }
+        })
+    }
 </script>
 
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCALOx3a43D4qa6l_2R9YJPAPF43A4NnjA&callback=initMap"></script>

@@ -99,7 +99,6 @@
                     }
 
                     $.get('/comments.json', data, (res) => {
-                        console.log(res)
                         $('#comments').empty();
                         for (c of res) {
                         $('#comments').append(`

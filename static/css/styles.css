@@ -1,10 +1,36 @@
-/* styling for homepage */
+/* custom font files */
+@font-face {
+    font-family: "Proxima Nova Soft";
+    src: url("css/fonts/ProximaNovaSoft.otf")format("opentype");
+    src: url("css/fonts/ProximaNovaSoftRegular.eot");
+    
+    font-family: "Helvetica Neue";
+    src: url("css/fonts/HelveticaNeue.otf")format("opentype");
+    src: url("css/fonts/HelveticaNeue.eot");
+}
+/*  */
+
+/*  */
+/* font for all of body in web-app */
+body {
+    font-family: "Proxima Nova Soft", "Helvetica Neue", sans-serif;
+}
+/*  */
+
+/*  */
+/* styling for homepage begins*/
 .descrp {
+    text-align: center;
+    font-size: 10px;
+}
+
+.lead {
     text-align: center;
 }
 
 .info {
     text-align: center;
+    
 }
 
 .title {
@@ -15,6 +41,30 @@
     float: right;
 }
 
+.jumbotron {
+    margin-left: 100px !important;
+    margin-right: 100px !important;
+    margin-top: 10px !important;
+    margin-bottom: 10px !important;
+}
+
+.display-2 {
+    color: red; 
+    text-align:center;
+}
+
+.question {
+    font-size: 35px;
+}
+
+.definition{
+    font-size: 20px;
+}
+/* styling for homepage ends */
+/*  */
+
+/*  */
+/* styling for /map page begins */
 header {
     grid-area: head;
 }
@@ -24,12 +74,16 @@ body {
     grid-template: 'head' 'map' 1fr / auto;
 }
 
+.redText {
+    color: red;
+}
+
 main {
     grid-area: map;
 }
 
 .map {
-    height: 700px;
+    height: 500px;
     width: 100%;
 }
 
@@ -39,9 +93,20 @@ main {
     position: fixed;
 }
 
+.instrc {
+    font-size: 20px;
+
+}
+
+#locationform {
+    text-align: center;
+}
+
 .address-input {
     text-align: center;
 }
+/* styling for /map page ends */
+/*  */
 
 div h1 {
     display: inline-block;

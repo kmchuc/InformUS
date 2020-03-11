@@ -14,37 +14,75 @@
 {% block content %}
 
 <main>
-<section class="map">
-<div id="map"></div>
+<br>
+<div class="intro container-fluid">
+    <h4>Instructions: </h4>
+        Click the map marker <span class="redText">once</span> to view information about the selected the polling center.
+        <br>
+        Click the map marker <span class="redText">twice</span> to view the comments left for the selected polling center.
+</div>
+<br>
+
+<section class="map container-fluid">
+    <div id="map"></div>
 </section>
 </main>
 
 <br>
-<form action='/map' id="locationform" method="POST">
+<form action='/map'id="locationform" method="POST">
 
     <div class="address-input">
-    To find a nearby polling center, please input an address:
-    <p>
-    <label>Street: </label><input type="text" name="street">
-    </p>
-    <p>
-    <label>City: </label><input type="text" name="city">
-    </p>
-    <p>
-    <label>State: </label><input type="text" name="state">
-    </p>
-    <p>
-    <label>Zipcode: </label><input type="text" name="zipcode">
-    </p>
-    <p>
-    <button id="geocode-address" type="submit">Submit</button>
-    </p>
+        <div class="instrc">
+            <b>To find a nearby polling center, please input an address:</b>
+        </div>
+            <p>
+            <div class="form-group row justify-content-center">
+                <label class="col-sm-1 col-form-label">Street: </label>
+                <div class="col-sm-2">
+                    <input type="text" class="form-control" name="street">
+                </div>
+            </div>
+            </p>
+        <p>
+            <div class="form-group row justify-content-center">
+                <label class="col-sm-1 col-form-label">City: </label> 
+                <div class="col-sm-2">
+                    <input type="text" class="form-control" name="city">
+                </div>
+            </div>
+        </p>
+        <p>
+            <div class="form-group row justify-content-center">
+                <label class="col-sm-1 col-form-label">State: </label>
+                <div class="col-sm-2">
+                    <input type="text" class="form-control" name="state">
+                </div>
+            </div>
+        </p>
+        <p>
+            <div class="form-group row justify-content-center">
+                <label class="col-sm-1 col-form-label">Zipcode: </label>
+                <div class="col-sm-2">
+                    <input type="text" class="form-control" name="zipcode">
+                </div>
+            </div>
+        </p>
+        <p>
+            <div class="form-group row justify-content-center">
+                <div class="col-sm-5">
+                <button type="submit" id="geocode-address" class="btn btn-primary">Submit</button>
+                </div>
+            </div>
+        </p>
     </div>
 
 </form>
 
-<h3 class="locationtitle">{location.locationName}</h3>
-<div id="comments">
+<div class="container-fluid">
+    <h3 class="locationtitle" id='loctitle'></h3>
+</div>
+
+<div class="container" id="comments">
 
 <script>
     function initMap() {
@@ -68,8 +106,6 @@
 
             $.get('/locations.json', formInputs, (locations) => {
                 for (const location of locations) {
-                    console.log(location);
-                    $('.locationtitle')[0].innerHTML = location.locationName
                     const pollingLocationInfo = (`
                     <div class="window-content">
                         <ul class="location-info">
@@ -102,7 +138,7 @@
                     }
 
                     $.get('/comments.json', data, (res) => {
-                        console.log(res)
+                        $('#loctitle').append(`Location: ${location.locationName}`)
                         $('#comments').empty();
                         for (c of res) {
                         $('#comments').append(`

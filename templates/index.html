@@ -1,19 +1,30 @@
 {% extends "base.html" %}
 
 {% block content %}
+    <br>
+    <h1 class="descrp container-fluid" style="font-size: 30px;">Informing Voters of possible voter suppression occuring at nearby voting centers</h1>
 
-    <h2 class=descrp>Informing Voters of possible voter suppression occuring at nearby voting centers</h2>
+    <div class="jumbotron">
+            <h1 class="display-2"><b>Stay in line!</b></h1>
+            <p class="lead"><h2 style="text-align: center;"><b>If you're in line when the polls close, you can still vote!</b></h2></p>
+    </div>
 
-    <div class=info>
+    <div class="info container-fluid">
     <p>
-        <h3>What is Voter Suppression?</h3>
+        <h3 class="question"><b>What is Voter Suppression?</b></h3>
     </p>
+
     <p>
-        A strategy used to influence the outcome of an election by discouraging or preventing specific groups of people from voting. InformUS's mission is to provide voters with proper information to allow you to practice your right to vote!
+        <div class="definition container-fluid">
+        A strategy used to influence the outcome of an election by discouraging or preventing specific groups of people from voting. 
+        <br>
+        InformUS's mission is to provide voters with proper information to allow you to practice your right to vote!
+        </div>
     </p>
 
     <form action="/map">
-        <button type="submit" id="map-button">Locate Polling Center Near Me!</button>
+        <button type="submit" class="btn btn-primary" id="map-button">Locate Polling Center Near Me!</button>
     </form>
+
     </div>
 {% endblock content %}

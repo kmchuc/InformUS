@@ -7,6 +7,16 @@
     font-family: "Helvetica Neue";
     src: url("css/fonts/HelveticaNeue.otf")format("opentype");
     src: url("css/fonts/HelveticaNeue.eot");
+
+    font-family: "MADE TOMMY ExtraBold";
+    src: url("css/fonts/MADE TOMMY ExtraBold.otf")format("opentype");
+
+    font-family: "Moon Get Heavy";
+    src: url("css/fonts/moon_get-Heavy.otf")format("opentype");
+    src: url("css/fonts/moon_get-Heavy.eot");
+
+    font-family: "The Bold Font";
+    src: url("css/fonts/theboldfont.ttf");
 }
 /*  */
 
@@ -95,7 +105,6 @@ main {
 
 .instrc {
     font-size: 20px;
-
 }
 
 #locationform {
@@ -104,6 +113,10 @@ main {
 
 .address-input {
     text-align: center;
+}
+
+#comments {
+    font-size: 20px;
 }
 /* styling for /map page ends */
 /*  */
@@ -117,6 +130,9 @@ div h1 {
 div loginbutton {
     float: right;
 }
+
+/*  */
+/* styling for /register page begins */
 div registerbutton {
     float: right;
 }
@@ -124,3 +140,10 @@ div registerbutton {
 .registerForm {
     text-align: center;
 }
+
+.inst {
+    font-size: 18px;
+}
+/* styling for /register page ends */
+/*  */
+

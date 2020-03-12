@@ -15,19 +15,17 @@
 
 <main>
 <br>
-<div class="intro container-fluid">
-    <h4>Instructions: </h4>
-        Click the map marker <span class="redText">once</span> to view information about the selected the polling center.
-        <br>
-        Click the map marker <span class="redText">twice</span> to view the comments left for the selected polling center.
-</div>
-<br>
-
 <section class="map container-fluid">
     <div id="map"></div>
 </section>
 </main>
-
+<div class="intro container-fluid">
+    <br>
+    Click the map marker <span class="redText">once</span> to view information about the selected the polling center.
+    <br>
+    Click the map marker <span class="redText">twice</span> to view the comments left for the selected polling center.
+    <br>
+</div>
 <br>
 <form action='/map'id="locationform" method="POST">
 
@@ -79,10 +77,11 @@
 </form>
 
 <div class="container-fluid">
-    <h3 class="locationtitle" id='loctitle'></h3>
+    <ul class="list-group">
+        <li class="locationtitle list-group-item active" id="loctitle" style="font-size: 25px;"></li>
+        <li class="list-group-item" id="comments"></li>
+    </ul>
 </div>
-
-<div class="container" id="comments">
 
 <script>
     function initMap() {
@@ -143,7 +142,7 @@
                         for (c of res) {
                         $('#comments').append(`
                         <div id=${c.comment_id}>
-                            'Comment: '${c.comment}, 'User ID: '${c.user_id}
+                            ${c.comment_id}. User ID: ${c.user_id}, Comment: ${c.comment}
                         </div>
                         `)
                         };

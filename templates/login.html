@@ -4,36 +4,46 @@
 
 <div class="container">
 <br>
-<h2>Log In</h2>
+<h1 class="container-fluid">Log In</h1>
+<br>
+<br>
+<div class="container-fluid">
 <form action='/login' method="POST">
     {{ form.hidden_tag() }}
-    <p>
-        <div class="form-group row col-sm-10">
-        {{ form.email.label }}<br>
-        {{ form.email(placeholder='youremail@example.com') }}<br>
-        {% for error in form.email.errors %}
-        <span style="color: red;">[{{ error }}]</span>
-        {% endfor %}
+    <div class="form-group row justify-content-left">
+            {{ form.email.label(class="col-sm-1 col-form-label") }}
+        <div class="col-sm-4">
+            {{ form.email(placeholder='youremail@example.com', class="form-control") }}<br>
+            {% for error in form.email.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
         </div>
-    </p>
+    </div>
 
-    <p>
-        <div class="form-group row col-sm-10">
-        {{ form.password.label }}<br>
-        {{ form.password(size=32) }}<br>
-        {% for error in form.password.errors %}
-        <span style="color: red;">[{{ error }}]</span>
-        {% endfor %}
+    <div class="form-group row justify-content-left">
+        {{ form.password.label(class="col-sm-1 col-form-label") }}
+        <div class="col-sm-4">
+            {{ form.password(class="form-control") }}
+            {% for error in form.password.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
         </div>
-    </p>
-    <p>
-        <input class="btn btn-primary" type="submit" value="Login">
-    </p>
+    </div>
+<br>
+    <div class="group row justify-content-left">
+        <div class="col-sm-4">New User? <a href="{{ url_for('register') }}">Click to Register!</a></div>
+    </div>
+<br>
+    <div class="form-group row">
+        <div class="col-sm-8">
+            <input class="btn btn-info" type="submit" value="Login">
+        </div>
+    </div>
 </form>
 </div>
-
-<div class="container">
+<br>
+<!-- <div class="container">
 <p>New User? <a href="{{ url_for('register') }}">Click to Register!</a></p>
-</div>
+</div> -->
 
 {% endblock %}

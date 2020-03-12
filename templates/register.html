@@ -4,187 +4,123 @@
     <link rel="stylesheet" href="/static/css/styles.css"/>
 {% endblock header %}
 
+
 {% block content %}
 <script src="/static/js/autocomplete.js"></script>
-
-<h2>Register</h2>
+<br>
+<h2 class="container-fluid">Register</h2>
+<div class=" inst container-fluid"><span class="redText">Please fill each field with the correct information.</span></div>
+<br>
+<div class="container-fluid">
 <form action='/register' method="POST">
     {{ form.hidden_tag() }}
-    <p>
-        {{ form.fname.label }}<br>
-        {{ form.fname(size=64) }}<br>
-        {% for error in form.fname.errors %}
-        <span style="color:red;">[{{ error }}]</span>
-        {% endfor %}
-    </p>
-
-    <p>
-        {{ form.lname.label }}<br>
-        {{ form.lname(size=64) }}<br>
-        {% for error in form.lname.errors %}
-        <span style="color:red;">[{{ error }}]</span>
-        {% endfor %}
-    </p>
-
-    <p>
-        {{ form.email.label }}<br>
-        {{ form.email(size=64) }}<br>
-        {% for error in form.email.errors %}
-        <span style="color:red;">[{{ error }}]</span>
-        {% endfor %}
-    </p>
-
-    <p>
-        {{ form.password.label }}<br>
-        {{ form.password(size=32) }}<br>
-        {% for error in form.password.errors %}
-        <span style="color: red;">[{{ error }}]</span>
-        {% endfor %}
-    </p>
-
-    <p>
-        {{ form.password2.label }}<br>
-        {{ form.password2(size=32) }}<br>
-        {% for error in form.password2.errors %}
-        <span style="color: red;">[{{ error }}]</span>
-        {% endfor %}
-    </p>
-
-    <p>
-        {{ form.street.label }}<br>
-        {{ form.street(size=32) }}<br>
-        {% for error in form.street.errors %}
-        <span style="color: red;">[{{ error }}]</span>
-        {% endfor %}
-    </p>
-
-    <p>
-        {{ form.city.label }}<br>
-        {{ form.city(size=32) }}<br>
-        {% for error in form.city.errors %}
-        <span style="color: red;">[{{ error }}]</span>
-        {% endfor %}
-    </p>
-
-    <p>
-        {{ form.state.label }}<br>
-        {{ form.state }}<br>
-        {% for error in form.state.errors %}
-        <span style="color: red;">[{{ error }}]</span>
-        {% endfor %}
-    </p>
-
-    <p>
-        {{ form.zipcode.label }}<br>
-        {{ form.zipcode(size=32) }}<br>
-        {% for error in form.zipcode.errors %}
-        <span style="color: red;">[{{ error }}]</span>
-        {% endfor %}
-    </p>
-
-    <p>
-        {{ form.politicalparty.label }}<br>
-        {{ form.politicalparty(size=32) }}<br>
-        {% for error in form.politicalparty.errors %}
-        <span style="color: red;">[{{ error }}]</span>
-        {% endfor %}
-    </p>
-
-    <p>
-        {{ form.submit() }}
-    </p>
-</form>
-
-<!-- <form action='/register' method="POST">
-    <div class="registerForm">
-        Fill in the required fields to register an account:
-        <p>
-            <label>First Name: </label><input type="text" name="fname" required>
-        </p>
-        <p>
-            <label>Last Name: </label><input type="text" name="lname" required>
-        </p>
-        <p>
-            <label>Email: </label><input type="text" placeholder="name@example.com" name="email" required>
-        </p>
-        <p>
-            <label>Password: </label><input type="password" name="password" minlength='8' required>
-        </p>
-        <p>
-            <label>Re-enter Password: </label><input type="password" name="password-repeat" minlength='8' required>
-        </p>
-        <p>
-            <label>Street: </label><input type="text" placeholder="123 Any Street" name="street" required>
-        </p>
-        <p>
-            <label>City: </label><input type="text" name="city" required>
-        </p>
-        <p>
-            <label>State: </label><select name="state" required>
-                <option value="alabama">AL</option>
-                <option value="alaska">AK</option>
-                <option value="arizona">AZ</option>
-                <option value="arkansas">AR</option>
-                <option value="california">CA</option>
-                <option value="colorado">CO</option>
-                <option value="connecticut">CT</option>
-                <option value="delaware">DE</option>
-                <option value="florida">FL</option>
-                <option value="georgia">GA</option>
-                <option value="hawaii">HI</option>
-                <option value="idaho">ID</option>
-                <option value="illinois">IL</option>
-                <option value="indiana">IN</option>
-                <option value="iowa">IA</option>
-                <option value="kansas">KS</option>
-                <option value="kentucky">KY</option>
-                <option value="louisiana">LA</option>
-                <option value="maine">ME</option>
-                <option value="maryland">MD</option>
-                <option value="massachusetts">MA</option>
-                <option value="michigan">MI</option>
-                <option value="minnesota">MN</option>
-                <option value="mississippi">MS</option>
-                <option value="missouri">MO</option>
-                <option value="montana">MT</option>
-                <option value="nebraska">NE</option>
-                <option value="nevada">NV</option>
-                <option value="newhampshire">NH</option>
-                <option value="newjersey">NJ</option>
-                <option value="newmexico">NM</option>
-                <option value="newyork">NY</option>
-                <option value="northcarolina">NC</option>
-                <option value="northdakota">ND</option>
-                <option value="ohio">OH</option>
-                <option value="oklahoma">OK</option>
-                <option value="oregon">OR</option>
-                <option value="pennsylvania">PA</option>
-                <option value="rhodeisland">RI</option>
-                <option value="southcarolina">SC</option>
-                <option value="southdakota">SD</option>
-                <option value="tennessee">TN</option>
-                <option value="texas">TX</option>
-                <option value="utah">UT</option>
-                <option value="vermont">VT</option>
-                <option value="virginia">VA</option>
-                <option value="washington">WA</option>
-                <option value="westvirginia">WV</option>
-                <option value="wisconsin">WI</option>
-                <option value="wyoming">WY</option>
-            </select>
-        </p>
-        <p>
-            <label>Zipcode: </label><input type="text" required name="zipcode">
-        </p>
-        <p>
-            <label>Political Party: </label>
-            <input id="inputPoliticalParty" type="text" name="politicalparty" required>
-        </p>
-        <p>
-            <button action="/home" type="submit">Register!</button>
-        </p>
+    <div class="form-group row justify-content-center">
+        {{ form.fname.label(class="col-sm-1 col-form-label") }}
+        <div class="col-sm-4">
+            {{ form.fname(class="form-control") }}
+            {% for error in form.fname.errors %}
+            <span style="color:red;">[{{ error }}]</span>
+            {% endfor %}
+        </div>
     </div>
-</form> -->
+
+    <div class="form-group row justify-content-center">
+        {{ form.lname.label(class="col-sm-1 col-form-label") }}
+        <div class="col-sm-4">
+            {{ form.lname(class="form-control") }}
+            {% for error in form.lname.errors %}
+            <span style="color:red;">[{{ error }}]</span>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="form-group row justify-content-center">
+        {{ form.email.label(class="col-sm-1 col-form-label") }}
+        <div class="col-sm-4">
+            {{ form.email(class="form-control") }}
+            {% for error in form.email.errors %}
+            <span style="color:red;">[{{ error }}]</span>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="form-group row justify-content-center">
+        {{ form.password.label(class="col-sm-1 col-form-label") }}
+        <div class="col-sm-4">
+            {{ form.password(class="form-control") }}
+            {% for error in form.password.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="form-group row justify-content-center">
+        {{ form.password2.label(class="col-sm-1 col-form-label") }}
+        <div class="col-sm-4">
+            {{ form.password2(class="form-control") }}
+            {% for error in form.password2.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="form-group row justify-content-center">
+        {{ form.street.label(class="col-sm-1 col-form-label") }}
+        <div class="col-sm-4">
+            {{ form.street(class="form-control") }}
+            {% for error in form.street.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="form-group row justify-content-center">
+        {{ form.city.label(class="col-sm-1 col-form-label") }}
+        <div class="col-sm-4">
+            {{ form.city(class="form-control") }}
+            {% for error in form.city.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="form-group row justify-content-center">
+        {{ form.state.label(class="col-sm-1 col-form-label") }}
+        <div class="col-sm-4">
+            {{ form.state(class="form-control") }}
+            {% for error in form.state.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </div>
+    </div>  
+
+    <div class="form-group row justify-content-center">
+        {{ form.zipcode.label(class="col-sm-1 col-form-label") }}
+        <div class="col-sm-4">
+            {{ form.zipcode(class="form-control") }}
+            {% for error in form.zipcode.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="form-group row justify-content-center">
+        {{ form.politicalparty.label(class="col-sm-1 col-form-label") }}
+        <div class="col-sm-4">
+            {{ form.politicalparty(class="form-control") }}
+            {% for error in form.politicalparty.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="form-group row justify-content-center">
+        <div class="col-sm-0">
+            {{ form.submit(class="btn btn-info") }}
+        </div>
+    </div>
+</form>
+</div>
 
 <script>
 

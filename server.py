@@ -172,7 +172,8 @@ def home():
 @app.route('/homesetup.json')
 def setup():
 
-    user = User.query.get(session['id'])
+    user = User.query.get(current_user.get_id())
+    # user = User.query.get(session['id'])
 
     address = user.address
     electionId = "2000"

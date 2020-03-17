@@ -5,17 +5,9 @@ To watch a screencast of the application go to:
 
 [![Alt text](https://img.youtube.com/vi/AwLZJL1cUz8/0.jpg)](https://www.youtube.com/watch?v=AwLZJL1cUz8)
 
-<!-- <a href="http://www.youtube.com/watch?feature=player_embedded&v=AwLZJL1cUz8" 
-    target="_blank"><img 
-    src="http://img.youtube.com/vi/AwLZJL1cUz8/0.jpg" 
-    alt="/readme-imgs/logo.png" 
-    width="240" 
-    height="180" border="10" />
-</a> -->
-
-![](readme-imgs/homepage.png)
 
 ## Overview
+![](readme-imgs/homepage.png)
 **The Map**
 * Shows markers representing nearby polling centers.
 * Info box includes location's name, hours, and coordinates

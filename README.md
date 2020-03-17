@@ -7,11 +7,11 @@ https://www.youtube.com/watch?v=AwLZJL1cUz8&lc=z234sxpyvmmlytcwb04t1aokgfu3btk04
 ![](readme-imgs/homepage.png)
 
 ## Overview
-** The Map **
+**The Map**
 * Shows markers representing nearby polling centers.
 * Info box includes location's name, hours, and coordinates
 
-**Users can: **
+**Users can:**
 * Login/logout/register (creating an account)
 * Find nearest polling centers using any address
 * Add a review for a polling center

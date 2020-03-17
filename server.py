@@ -1,6 +1,6 @@
 import requests
 from jinja2 import StrictUndefined
-from flask import Flask, render_template, redirect, request, flash, session, jsonify, url_for
+from flask import Flask, render_template, redirect, request, flash, jsonify, url_for
 from flask_debugtoolbar import DebugToolbarExtension
 from model import connect_to_db, db, PollingCenter, Comment, User, Parties, PoliticalCandidates
 import os

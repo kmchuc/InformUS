@@ -3,13 +3,15 @@ InformUS is a full-stack web application created to inform users of possible vot
 
 To watch a screencast of the application go to:
 
-<a href="http://www.youtube.com/watch?feature=player_embedded&v=AwLZJL1cUz8" 
+[![Alt text](https://img.youtube.com/vi/AwLZJL1cUz8/0.jpg)](https://www.youtube.com/watch?v=AwLZJL1cUz8)
+
+<!-- <a href="http://www.youtube.com/watch?feature=player_embedded&v=AwLZJL1cUz8" 
     target="_blank"><img 
     src="http://img.youtube.com/vi/AwLZJL1cUz8/0.jpg" 
     alt="/readme-imgs/logo.png" 
     width="240" 
     height="180" border="10" />
-</a>
+</a> -->
 
 ![](readme-imgs/homepage.png)
 

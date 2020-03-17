@@ -2,7 +2,13 @@
 InformUS is a full-stack web application created to inform users of possible voter suppression occuring at nearby polling centers. It allows users to input their address, view nearby polling centers, and leave comments to warn others. 
 
 To watch a screencast of the application go to: 
-https://www.youtube.com/watch?v=AwLZJL1cUz8&lc=z234sxpyvmmlytcwb04t1aokgfu3btk04mbewswm5yowbk0h00410
+<a href="http://www.youtube.com/watch?feature=player_embedded&v=AwLZJL1cUz8" 
+    target="_blank"><img 
+    src="http://img.youtube.com/vi/AwLZJL1cUz8/0.jpg" 
+    alt="IMAGE ALT TEXT HERE" 
+    width="240" 
+    height="180" border="10" />
+</a>
 
 ![](readme-imgs/homepage.png)
 

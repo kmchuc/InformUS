@@ -151,7 +151,7 @@ def home():
 
     if request.method == 'POST':
         comment = request.form['comment']
-        user = User.query.get(session['id'])
+        user = User.query.get(current_user.get_id())
         lat = request.form['lat']
         lng = request.form['lng']
         hours = request.form['hours']
@@ -173,7 +173,6 @@ def home():
 def setup():
 
     user = User.query.get(current_user.get_id())
-    # user = User.query.get(session['id'])
 
     address = user.address
     electionId = "2000"
@@ -246,8 +245,7 @@ def logout():
 ##############################################################
 
 if __name__ == "__main__":
-    app.debug = True
-
+    app.debug = False
     app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 
     connect_to_db(app)

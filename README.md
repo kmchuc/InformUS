@@ -1,6 +1,13 @@
 ![](/readme-imgs/logo.png)
 # InformUS
-InformUS is a full-stack web application created to inform users of possible voter suppression occuring at nearby polling centers. It allows users to input their address, view nearby polling centers, and leave comments to warn others. 
+InformUS is a full-stack web application created to inform users of voter suppression occuring at nearby polling centers. Users can locate nearby polling centers displayed on the map using markers and view comments for each location. Unregistered users are not allowed to leave comments but do have access to view comments for any polling location.
+
+**Contents**
+- [Overview](#overview)
+- [Tech Stack](#tech-stack)
+- [Features](#features)
+- [Installation](#installation)
+- [About Me](#about-me)
 
 To watch a screencast of the application go to:
 
@@ -21,7 +28,7 @@ To watch a screencast of the application go to:
 * Add a review for a polling center
 * View all reviews left by other users for a polling center
 
-## Technologies and stack
+## Tech Stack
 **Backend:**
 Python, Flask, Flask-SQLAlchemy, Flask-Login, Jinja2
 
@@ -56,4 +63,6 @@ A logged in user can leave comments for polling centers, when submitted the comm
 <br>
 ![](readme-imgs/commentmap.gif)
 
+## About Me
 
+Kimberly Chuc is a software engineer located in the San Francisco Bay Area. She previously worked as an EMT striving towards becoming a Physician Assistant. Her passion for politics and love problem solving led her to creating her capstone package. 

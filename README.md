@@ -8,7 +8,9 @@ To watch a screencast of the application go to:
 
 ## Overview
 ![](readme-imgs/homepage.png)
-**The Map**
+<br>
+
+**The Map:**
 * Shows markers representing nearby polling centers.
 * Info box includes location's name, hours, and coordinates
 
@@ -29,13 +31,15 @@ JavaScript, jQuery, AJAX, Jijna, HTML5, CSS3, Boostrap
 Google Maps JavaScript, Google Civic Information, Geocode
 
 ## Features
-**Map**
+**Map:**
+<br>
 Google maps methods to initliaze a visual map containing markers for each polling location.
 Store comments in a database with associated tables for users, comments, and polling centers
 Flask app routes AJAX requests to the database and Flask sessions
 ![](/readme-imgs/map.gif)
 
 **Markers**
+<br>
 Query database to construct a JSON file which supplied my javascript function to populate the map. 
 Used Google Maps event listeners to create interactive markers
 Click on map marker once to view information about polling center such as name, hours, and location
@@ -44,6 +48,7 @@ When logged in, user can leave comment for polling center in the info box
 ![](/readme-imgs/interactivemap.gif)
 
 **Comments**
+<br>
 A logged in user can leave comments for polling centers, when submitted the comment is saved into the database in relation to the user's ID
 ![](readme-imgs/commentmap.gif)
 

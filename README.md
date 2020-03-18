@@ -33,7 +33,7 @@ Google Maps JavaScript, Google Civic Information, Geocode
 Google maps methods to initliaze a visual map containing markers for each polling location.
 Store comments in a database with associated tables for users, comments, and polling centers
 Flask app routes AJAX requests to the database and Flask sessions
-![](/finalproject/readme-imgs/map.gif)
+![](/readme-imgs/map.gif)
 
 **Markers**
 Query database to construct a JSON file which supplied my javascript function to populate the map. 
@@ -41,7 +41,7 @@ Used Google Maps event listeners to create interactive markers
 Click on map marker once to view information about polling center such as name, hours, and location
 Click on map marker twice to view comments at the bottom of the page
 When logged in, user can leave comment for polling center in the info box 
-![](/finalproject/readme-imgs/interactivemap.gif)
+![](/readme-imgs/interactivemap.gif)
 
 **Comments**
 A logged in user can leave comments for polling centers, when submitted the comment is saved into the database in relation to the user's ID

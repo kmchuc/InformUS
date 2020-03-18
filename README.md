@@ -1,3 +1,4 @@
+![](/readme-imgs/logo.png)
 # InformUS
 InformUS is a full-stack web application created to inform users of possible voter suppression occuring at nearby polling centers. It allows users to input their address, view nearby polling centers, and leave comments to warn others. 
 
@@ -7,7 +8,7 @@ To watch a screencast of the application go to:
 
 
 ## Overview
-![](readme-imgs/homepage.png)
+![](/readme-imgs/homepage.png)
 <br>
 
 **The Map:**

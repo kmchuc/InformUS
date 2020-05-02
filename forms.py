@@ -15,6 +15,7 @@ class RegistrationForm(FlaskForm):
     city = StringField('City: ', validators=[DataRequired()])
     state = SelectField('State: ', choices=[("alabama", "AL"), ("alaska", "AK"), ("arizona", "AZ"), ("arkansas", "AR"), ("california", "CA"), ("colorado", "CO"), ("connecticut", "CT"), ("delaware", "DE"), ("florida", "FL"), ("georgia", "GA"), ("hawaii", "HI"), ("idaho", "ID"), ("illinois", "IL"), ("indiana", "IN"), ("iowa", "IA"), ("kansas", "KS"), ("kentucky", "KY"), ("louisiana", "LA"), ("maine", "ME"), ("maryland", "MD"), ("massachusetts", "MA"), ("michigan", "MI"), ("minnesota", "MN"), ("mississippi", "MS"), ("missouri", "MO"), ("montana", "MT"), ("nebraska", "NE"), ("nevada", "NV"), ("newhampshire", "NH"), ("newjersey", "NJ"), ("newmexico", "NM"), ("newyork", "NY"), ("northcarolina", "NC"), ("northdakota", "ND"), ("ohio", "OH"), ("oklahoma", "OK"), ("oregon", "OR"), ("pennsylvania", "PA"), ("rhodeisland", "RI"), ("southcarolina", "SC"), ("southdakota", "SD"), ("tennessee", "TN"), ("texas", "TX"), ("utah", "UT"), ("vermont", "VT"), ("virginia", "VA"), ("washington", "WA"), ("westvirginia", "WV"), ("wisconsin", "WI"), ("wyoming", "WY")])
     zipcode = StringField('Zipcode: ', validators=[DataRequired()])
+    phonenum = StringField('Phone: ', validators=[DataRequired()])
     politicalparty = StringField('Political Party: ', validators=[DataRequired()], id='inputPoliticalParty')
     submit = SubmitField('Register')
 
@@ -23,6 +24,20 @@ class RegistrationForm(FlaskForm):
 
         if user is not None:
             raise ValidationError('Email already in use. Please use different email.')
+    
+    def validate_phone(form, field):
+        if len(field.data) > 16:
+            raise ValidationError('Invalid phone number.')
+
+        try:
+            input_number = phonenum.parse(field.data)
+            if not (phonenum.is_valid_number(input_number)):
+                raise ValidationError('Invalid phone number.')
+        
+        except:
+            input_number = phonenum.parse("+1"+field.data)
+            if not (phonenum.is_valid_number(input_number)):
+                raise ValidationError('Invalid phone number')
 
 class LoginForm(FlaskForm):
     email = StringField('Email: ', validators=[DataRequired(), Email(message='Enter a valid email.')])

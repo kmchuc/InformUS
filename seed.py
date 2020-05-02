@@ -12,7 +12,7 @@ def load_parties():
         row = row.rstrip()
         party_id, political_party, political_party_abbr = row.split("|")
 
-        parties = Parties(party_id=party_id,                        political_party=political_party,                                political_party_abbr=political_party_abbr)
+        parties = Parties(party_id=party_id, political_party=political_party, political_party_abbr=political_party_abbr)
 
         # We need to add to the session or it won't ever be stored
         db.session.add(parties)

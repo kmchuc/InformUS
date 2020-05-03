@@ -1,6 +1,6 @@
 from sqlalchemy import func
 
-from model import connect_to_db, db, PollingCenter, Comment, User, Parties, PoliticalCandidates
+from model import connect_to_db, db, PollingCenter, Comment, User, Parties, PoliticalCandidates, PollingHour
 from server import app
 
 def load_parties():
@@ -24,12 +24,28 @@ def load_parties():
     # Once seeding is done, should commit our work
     db.session.commit()
 
+def load_polling_hours():
+    """Load polling center hours into database"""
+
+    for i, row in enumerate(open("seed_data/v.hours")):
+        row = row.strip()
+        state_id, state_name, state_abbrev, state_hours = row.split("|")
+
+    hours = PollingHour(state_id=state_id, state_name=state_name, state_abbrev=state_abbrev, state_hours=state_hours)
+
+    db.session.add(hours)
+
+    if i % 100 == 0:
+        print(i)
+
+    db.session.commit()
+
 def set_val_user_id():
     """Sets the value for next user in database"""
 
     # Get the value for the next user_id to be max_id +1
     result = db.session.query(func.max(User.id)).one()
-    max_id = int(result[0])
+    max_id = result[0]
 
     # Set the value for the next user_id to be max_id +1
     query = "SELECT setval('users_user_id_seq', :new_id)"

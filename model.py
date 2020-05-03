@@ -32,6 +32,25 @@ class PollingCenter(db.Model):
                                 address={self.address} 
                                 hours_of_operation={self.hours_of_operation}>"""
 
+class PollingHour(db.Model):
+    """Table containing polling center's hours of operation based on state"""
+
+    __tablename__ = "pollinghours"
+
+    state_id = db.Column(db.Integer,
+                        primary_key=True,
+                        autoincrement=True)
+    state_name = db.Column(db.String, nullable=False)
+    state_abbrev = db.Column(db.String, nullable=False)
+    state_hours = db.Column(db.Integer, nullable=False)
+    
+    def __repr__(self):
+        """Human readable representation of data from PollingHour table"""
+
+        return f"""<PollingHour state_id={self.state_id} 
+                            state_name={self.state_name} 
+                            state_hours={self.state_hours}>"""
+
 class Comment(db.Model):
     """Table containing User's comments for each Polling Center"""
 

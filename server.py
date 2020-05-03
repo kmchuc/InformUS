@@ -2,7 +2,7 @@ import requests
 from jinja2 import StrictUndefined
 from flask import Flask, render_template, redirect, request, flash, jsonify, url_for
 from flask_debugtoolbar import DebugToolbarExtension
-from model import connect_to_db, db, PollingCenter, Comment, User, Parties, PoliticalCandidates
+from model import connect_to_db, db, PollingCenter, Comment, User, Parties, PoliticalCandidates, PollingHour
 import os
 from flask_login import current_user, login_user, logout_user, login_required, LoginManager
 from forms import LoginForm, RegistrationForm

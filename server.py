@@ -10,7 +10,6 @@ from twilio.rest import Client
 
 api_key = os.environ['api_key']
 twilio_key = os.environ['twilio_key']
-numba = os.environ['numba']
 
 ############################################################################################################################################################
 
@@ -97,6 +96,7 @@ def register():
         city = form.city.data
         state = form.state.data
         zipcode = form.zipcode.data
+        phonenum = form.phonenum.data
         politicalparty = form.politicalparty.data
 
         address = f"{street} {city}, {state} {zipcode}"
@@ -111,11 +111,9 @@ def register():
 
         party = Parties.query.filter_by(political_party=politicalparty).first()
 
-        print(party)
-
         party = party.party_id
 
-        user = User(fname=fname, lname=lname, email=email, password=password, address=address, lat=lat, lng=lng, party_id=party)
+        user = User(fname=fname, lname=lname, email=email, password=password, address=address, lat=lat, lng=lng, phonenum=phonenum, party_id=party)
 
         db.session.add(user)
         db.session.commit()
@@ -240,16 +238,20 @@ def comments():
 @app.route('/twilio.json')
 def smssend():
 
-    account_sid = 'ACe3ab4a870c46c7bed4222e979d8fac68',
+    user = User.query.get(current_user.get_id())
+
+    phonenum = user.phonenum
+
+    account_sid = 'ACe3ab4a870c46c7bed4222e979d8fac68'
 
     auth_token = twilio_key
     
     client = Client(account_sid, auth_token)
 
-    message = client.messages.creat(
+    message = client.messages.create(
+        body="Your ",
         from_='+12057406075',
-        to=numba 
-    )
+        to=phonenum)
 
     print(message.sid)
 

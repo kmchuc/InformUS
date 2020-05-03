@@ -6,8 +6,11 @@ from model import connect_to_db, db, PollingCenter, Comment, User, Parties, Poli
 import os
 from flask_login import current_user, login_user, logout_user, login_required, LoginManager
 from forms import LoginForm, RegistrationForm
+from twilio.rest import Client
 
 api_key = os.environ['api_key']
+twilio_key = os.environ['twilio_key']
+numba = os.environ['numba']
 
 ############################################################################################################################################################
 
@@ -234,7 +237,21 @@ def comments():
             })
     return jsonify(comments)
 
+@app.route('/twilio.json')
+def smssend():
 
+    account_sid = 'ACe3ab4a870c46c7bed4222e979d8fac68',
+
+    auth_token = twilio_key
+    
+    client = Client(account_sid, auth_token)
+
+    message = client.messages.creat(
+        from_='+12057406075',
+        to=numba 
+    )
+
+    print(message.sid)
 
 @app.route('/logout')
 def logout():

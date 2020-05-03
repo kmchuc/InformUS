@@ -74,7 +74,7 @@ class User(UserMixin, db.Model):
     lname = db.Column(db.String(50), nullable=False)
     email = db.Column(db.String(100), nullable=False)
     password = db.Column(db.String(50), nullable=False)
-    phonenum = db.Column(db.Integer(10), nullable=False)
+    phonenum = db.Column(db.Integer, nullable=False)
     lat = db.Column(db.Float, nullable=False)
     lng = db.Column(db.Float, nullable=False)
 

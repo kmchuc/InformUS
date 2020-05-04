@@ -42,7 +42,7 @@ class PollingHour(db.Model):
                         autoincrement=True)
     state_name = db.Column(db.String, nullable=False)
     state_abbrev = db.Column(db.String, nullable=False)
-    state_hours = db.Column(db.Integer, nullable=False)
+    state_hours = db.Column(db.String, nullable=False)
     
     def __repr__(self):
         """Human readable representation of data from PollingHour table"""
@@ -89,6 +89,7 @@ class User(UserMixin, db.Model):
     
     party_id = db.Column(db.Integer, db.ForeignKey('parties.party_id'), nullable=False)
     address = db.Column(db.String(300), nullable=False)
+    state = db.Column(db.Integer, db.ForeignKey('pollinghours.state_id'), nullable=False)
     fname = db.Column(db.String(25), nullable=False)
     lname = db.Column(db.String(50), nullable=False)
     email = db.Column(db.String(100), nullable=False)
@@ -104,6 +105,9 @@ class User(UserMixin, db.Model):
     #Defining relationship between User and Parties table
     parties = db.relationship("Parties",
                             backref=db.backref("users", order_by=id))
+
+    pollinghours = db.relationship("PollingHour",
+                                    backref=db.backref("users", order_by=id))
 
     # def set_password(self, password):
     #     """create hashsed password"""
@@ -130,27 +134,27 @@ class Parties(db.Model):
     political_party_abbr = db.Column(db.String(4), nullable=False)
 
     #Defining relationship between Parties and Political Candidates tables
-    candidates = db.relationship("PoliticalCandidates",
-                                backref=db.backref("parties", order_by=party_id))
+    # candidates = db.relationship("PoliticalCandidates",
+    #                             backref=db.backref("parties", order_by=party_id))
 
     def __repr__(self):
-        return f"<Parties party_id={self.party_id} political_party={self.political_party}>"
+        return f"<Parties party_id={self.party_id}>"
 
-class PoliticalCandidates(db.Model):
-    """Table containing each political candidates information"""
+# class PoliticalCandidates(db.Model):
+#     """Table containing each political candidates information"""
 
-    __tablename__ = "politicalcandidates"
+#     __tablename__ = "politicalcandidates"
 
-    candidate_id = db.Column(db.Integer,
-                            primary_key=True, 
-                            autoincrement=True)
-    party_id = db.Column(db.Integer, db.ForeignKey('parties.party_id'), nullable=False)
-    candidate_name = db.Column(db.String(150), nullable=False)
-    description = db.Column(db.String(400), nullable=False)
+#     candidate_id = db.Column(db.Integer,
+#                             primary_key=True, 
+#                             autoincrement=True)
+#     party_id = db.Column(db.Integer, db.ForeignKey('parties.party_id'), nullable=False)
+#     candidate_name = db.Column(db.String(150), nullable=False)
+#     description = db.Column(db.String(400), nullable=False)
 
-    def __repr__(self):
-        """Return human-readable representation of Political Candidates Table"""
-        return f"<Political Candidates party_id={self.party_id} candidate_name={self.candidate_name}>"   
+#     def __repr__(self):
+#         """Return human-readable representation of Political Candidates Table"""
+#         return f"<Political Candidates party_id={self.party_id} candidate_name={self.candidate_name}>"   
 
 ##############################################################################
 #Helper Functions

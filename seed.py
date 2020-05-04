@@ -1,6 +1,5 @@
 from sqlalchemy import func
-
-from model import connect_to_db, db, PollingCenter, Comment, User, Parties, PoliticalCandidates, PollingHour
+from model import connect_to_db, db, PollingCenter, Comment, User, Parties, PollingHour
 from server import app
 
 def load_parties():
@@ -31,12 +30,12 @@ def load_polling_hours():
         row = row.strip()
         state_id, state_name, state_abbrev, state_hours = row.split("|")
 
-    hours = PollingHour(state_id=state_id, state_name=state_name, state_abbrev=state_abbrev, state_hours=state_hours)
+        hours = PollingHour(state_id=state_id, state_name=state_name, state_abbrev=state_abbrev, state_hours=state_hours)
 
-    db.session.add(hours)
+        db.session.add(hours)
 
-    if i % 100 == 0:
-        print(i)
+        if i % 100 == 0:
+            print(i)
 
     db.session.commit()
 
@@ -45,10 +44,10 @@ def set_val_user_id():
 
     # Get the value for the next user_id to be max_id +1
     result = db.session.query(func.max(User.id)).one()
-    max_id = result[0]
+    max_id = int(result[0])
 
     # Set the value for the next user_id to be max_id +1
-    query = "SELECT setval('users_user_id_seq', :new_id)"
+    query = "SELECT setval('users_user_id_seq', max(id) FROM users"
     db.session.execute(query, {'new_id': max_id + 1})
     db.session.commit()
 
@@ -56,5 +55,6 @@ if __name__ == "__main__":
     connect_to_db(app)
     db.create_all()
 
+    load_polling_hours()
     load_parties()
     set_val_user_id()

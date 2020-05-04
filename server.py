@@ -2,7 +2,7 @@ import requests
 from jinja2 import StrictUndefined
 from flask import Flask, render_template, redirect, request, flash, jsonify, url_for
 from flask_debugtoolbar import DebugToolbarExtension
-from model import connect_to_db, db, PollingCenter, Comment, User, Parties, PoliticalCandidates, PollingHour
+from model import connect_to_db, db, PollingCenter, Comment, User, Parties, PollingHour
 import os
 from flask_login import current_user, login_user, logout_user, login_required, LoginManager
 from forms import LoginForm, RegistrationForm
@@ -113,7 +113,11 @@ def register():
 
         party = party.party_id
 
-        user = User(fname=fname, lname=lname, email=email, password=password, address=address, lat=lat, lng=lng, phonenum=phonenum, party_id=party)
+        state = PollingHour.query.filter_by(state_name=state).first()
+
+        state = state.state_id
+
+        user = User(fname=fname, lname=lname, email=email, password=password, address=address, lat=lat, lng=lng, phonenum=phonenum, party_id=party, state=state)
 
         db.session.add(user)
         db.session.commit()

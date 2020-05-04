@@ -17,12 +17,22 @@
 </main>
 <br>
 <div class="intro container-fluid">
+    <h2>Instructions:</h2>
     Click the map marker <span class="redText">once</span> to view information about the selected the polling center.
     <br>
     Click the map marker <span class="redText">twice</span> to view the comments left for the selected polling center.
+    <br>
+    To have a text message sent to your phone, reminding you of your state's polling hours, click the "Send me a text reminder!" button below!
 </div>
 
 <div class="container-fluid"><a href='/map'>To view comments for other polling centers click here!</a></div>
+
+<br>
+<div class="container-fluid">
+    <form action="/twilio" method="POST">
+        <button type="submit" class="btn btn-info">Send me a text reminder!</button>
+    </form>
+</div>
 
 <br>
 <div class="container-fluid">

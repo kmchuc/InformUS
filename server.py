@@ -239,12 +239,18 @@ def comments():
             })
     return jsonify(comments)
 
-@app.route('/twilio.json')
+@app.route('/twilio')
 def smssend():
 
     user = User.query.get(current_user.get_id())
 
     phonenum = user.phonenum
+
+    state = user.state
+
+    state = PollingHour.query.get(state)
+
+    pollinghour = state.state_hours
 
     account_sid = 'ACe3ab4a870c46c7bed4222e979d8fac68'
 
@@ -253,7 +259,7 @@ def smssend():
     client = Client(account_sid, auth_token)
 
     message = client.messages.create(
-        body="Your ",
+        body="Your state's polling hours are: %s." % pollinghour,
         from_='+12057406075',
         to=phonenum)
 

@@ -65,4 +65,4 @@ A logged in user can leave comments for polling centers, when submitted the comm
 
 ## About Me
 
-Kimberly Chuc is a software engineer located in the San Francisco Bay Area. She previously worked as an EMT striving towards becoming a Physician Assistant. Her passion for politics and love problem solving led her to creating her capstone package. 
+Kimberly Chuc is a software engineer located in the San Francisco Bay Area. She previously worked as an EMT striving towards becoming a Physician Assistant. Her passion for politics and love for problem solving led her to creating her capstone package. She hopes this project provides people with the proper resources to practice their right to vote! 
